@@ -1,25 +1,33 @@
-import tensorflow as tf
 import numpy as np
+import sys
 import math
 import csv
-import sys
+
+# ============================================parameter=================================================
+w = np.random.rand(9) # weight
+b = np.random.rand(1)   # bias
+L =0.0005 #learning rate
+iteration = 1000 # numbers of iteration
+low = 10
+high = 110
+datasize = 5652
+# ============================================parameter=================================================
+
+#train.columns   = ['date','place','name','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x']
+
+
+# ============================================get_data===================================================
 train = np.genfromtxt(sys.argv[1],delimiter=',')    #impoert data
 train = np.delete(train,range(3),1)                 #delete rows
 train = np.delete(train,0,0)                        #columns
-
-low = 5
-high =110
-iteration = 20000
-datasize = 5652
-feather = 9
-L = 0.4
-w = np.random.rand(feather)
-b = np.random.rand(1)
 dell_ = []
 for i in range(len(train)):
-    if(i%18 != 9):
+    if(i%18 !=9):
         dell_.append(i)
 train = np.delete(train,dell_,0)
+train = np.nan_to_num(train)                        #rainfall
+train = np.absolute(train)                          #-1 -> 1
+
 train_set = []
 for i in range(len(train)):
     for j in range(len(train[0])):
@@ -41,6 +49,7 @@ for i in range(len(train)):
                     qq += train[i][k]
                     qq_c+=1
             train_set = np.append(train_set,qq/qq_c)
+
 train_x = np.zeros((471*12,9),dtype = float)
 train_y = np.zeros((471*12),dtype = float)
 for i in range(12):
@@ -51,32 +60,27 @@ for i in range(12):
 
 
 
-x = tf.constant(train_x,dtype = tf.float32,shape=(471*12,9))
-y = tf.constant(train_y,shape=(471*12,1),dtype=tf.float32)
-
-w = tf.Variable(tf.random_normal([9,1],dtype=tf.float32))
-b = tf.Variable(tf.random_normal([1],dtype=tf.float32))
-
-
-y_data = tf.add(tf.matmul(x,w),b)
-
-loss = tf.reduce_mean(tf.square(y-y_data))
-optimizer = tf.train.AdamOptimizer(L)  #learning rate
-
-train = optimizer.minimize(loss)
-
-init = tf.initialize_all_variables()
-
-sess = tf.Session()
-#記得初始化
-sess.run(init)     #Very important
-for step in range(iteration):
-    sess.run(train)
-    if step % 100 ==0:
-        print(step,sess.run(y_data),sess.run(loss))
-wwww = np.zeros(9,dtype = float)
-
-wwww = w.eval(session=sess)
+# ============================================predict=====================================
+for epoch in range(iteration):
+    print(epoch,w,b)
+    loss = 0
+    loss_ = np.zeros((9,),dtype= float)
+    for data_size in range(datasize):
+        train_predict = 0
+        for i in range(9):
+            train_predict += w[i]*train_x[data_size][i]
+        train_predict += b
+# ============================================compute loss_=================================
+        for j in range(9):
+            loss_[j] += (1/(datasize))*(train_predict - train_y[data_size])*train_x[data_size][j]
+        
+# ===========================================square loss function==================================
+        loss += (1/(datasize))*(train_predict - train_y[data_size])
+    b -= L*loss/math.sqrt(epoch+1)
+    # b -= L*loss/math.sqrt(epoch+1)
+    for k in range(9):
+        w[k] -= L*loss_[k]/math.sqrt(epoch+1)
+        # w[k] -= L*loss_[k]/math.sqrt(epoch+1)
 
 
 dataQ = np.genfromtxt(sys.argv[2],delimiter=',',dtype=float)
@@ -95,13 +99,12 @@ for i in range(len(dataQ)):
                 dataQ[i][j] = dataQ[i][j+1]
             else:
                 dataQ[i][j] = dataQ[i][j-1]
-bb = b.eval(session=sess)
 
 predic = np.zeros((260))
 for k in range(260):
     for ww in range(9):
-        predic[k] += dataQ[k][ww]*wwww[ww]
-    predic[k] += bb
+        predic[k] += dataQ[k][ww]*w[ww]
+    predic[k] += b
 
 print(predic)
 ans = []

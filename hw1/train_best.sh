@@ -1,2 +1,2 @@
 #!/bin/bash 
-python train_best.py $1 $2
+python train_best.py $1 $2 $3
