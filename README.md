@@ -4,3 +4,39 @@
   predict PM2.5 via dataset from 大里
   train.sh
   train.csv  test.csv  ans.csv
+# HW2
+  binary classification
+  generative model vs discriminative model(logistic regression)
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  # environment
+    python3.6 tensorflow 1.2.0 win10 
