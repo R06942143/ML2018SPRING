@@ -7,26 +7,37 @@ def sigmoid(X):
     z = 1.0/(1.0+np.exp(-X))
     return np.clip(z,0.000000001,0.999999999)
 
+def scaling(X):
+    a = np.amax(X)
+    b = np.amin(X)
+    for i in range(len(X)):
+        X[i] = (X[i]-b)/(a-b)
+    return X
+
+
+
+
 de_feature =[10]
 
 train_x = np.genfromtxt(sys.argv[3],delimiter=',')    #impoert data
 train_y = np.genfromtxt(sys.argv[4],delimiter=',')
 train_x = np.delete(train_x,0,0)
 
-Qmax = np.max(train_x[:,78])
-Qmin = np.min(train_x[:,78])
-for i in train_x[:,78]:
-    i = (i-Qmin)/(Qmax-Qmin)
+
 
 
 train_x = np.delete(train_x,de_feature,1)
 test_x  = np.genfromtxt(sys.argv[5],delimiter=',')
 test_x  = np.delete(test_x,0,0)
-for i in test_x[:,78]:
-    i = (i-Qmin)/(Qmax-Qmin)
+
 
 test_x = np.delete(test_x,de_feature,1)
 
+for i in range(len(train_x[0])):
+    train_x[:,i] = scaling(train_x[:,i])
+
+for i in range(len(test_x[0])):
+    test_x[:,i] =  scaling(test_x[:,i])
 
 L = 0.005
 epoch = 10000
