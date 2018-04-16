@@ -7,6 +7,9 @@
 # HW2
   binary classification
   generative model vs discriminative model(logistic regression)
+# HW3
+  CNN
+  VGG16 VGG19
   
   
   
