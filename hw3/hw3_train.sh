@@ -1,0 +1,1 @@
+python VGG19.py $1
