@@ -150,7 +150,7 @@ model.add(Dense(7,activation='softmax'))
 
 print('go')
 model.compile(loss='categorical_crossentropy',optimizer=Adam(lr=0.001),metrics=['accuracy'])
-checkpoint = ModelCheckpoint(r'C:\Users\tonic\Desktop\py\submit_selu\VGG19'+"\-{epoch:02d}-{val_acc:.2f}.h5py", monitor='val_acc', verbose=1, save_best_only=True, mode='max',period=1)
+checkpoint = ModelCheckpoint("\-{epoch:02d}-{val_acc:.2f}.h5py", monitor='val_acc', verbose=1, save_best_only=True, mode='max',period=1)
 
 batch_size=128
 
