@@ -32,7 +32,7 @@ else:
     fff = './public.h5py'
 model = Sequential()
 model = load_model(fff)
-model.summary()
+# model.summary()
 
 print("predicting")
 result = np.argmax(model.predict(train_x), axis=1)
