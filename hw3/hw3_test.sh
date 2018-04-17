@@ -4,4 +4,4 @@ wget -O private.h5py 'https://www.dropbox.com/s/55vsz7178r02qs5/-209-0.69.h5py?d
 
 python predict.py $1 $2 $3
 
-#! $3 = 'publi'c or 'private' 
+#! $3 = 'public' or 'private' 
