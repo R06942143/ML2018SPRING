@@ -1,0 +1,1 @@
+python hw4_PCA.py $1 $2
