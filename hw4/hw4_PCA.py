@@ -15,7 +15,7 @@ mean = np.mean(train,axis=1)[:,np.newaxis]
 data = train - mean
 U,S,V = np.linalg.svd(data,full_matrices=False)
 #########################read################################
-reconstruct = io.imread(sys.argv[2]).reshape(-1)[:,np.newaxis].astype('float32')
+reconstruct = io.imread(os.path.join(sys.argv[1],sys.argv[2])).reshape(-1)[:,np.newaxis].astype('float32')
 reconstruct -= mean
 eigen_face = U[:,0:4]
 re_ = np.dot(eigen_face.T,reconstruct)
