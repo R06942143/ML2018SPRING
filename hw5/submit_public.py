@@ -18,18 +18,21 @@ test_path = sys.argv[1]
 with open(test_path,encoding = 'utf-8') as f:
     test = f.readlines()
 test_X = [preprocess(line.strip().split(",",1)[1]) for line in test]
+test_X = test_X[1:]
 
 
 tokenizer = Tokenizer(num_words=None,filters="\n\t")
 with open('./tokenizer.pickle', 'rb') as handle:
     tokenizer = pickle.load(handle)
-word_index = tokenizer.word_index
 sequences_test = tokenizer.texts_to_sequences(test_X)
 test_X_num = pad_sequences(sequences_test, maxlen=39)
-
-model = load_model('./'+str(sys.argv[3])+'.h5py')
-
-pred_y_prob = model.predict(test_X_num,batch_size=128)
+if(sys.argv[3]=='public'):
+    model = load_model('./public.h5py')
+    print('public')
+else:
+    model = load_model('./private.h5py')
+    print('private')
+pred_y_prob = model.predict(test_X_num,batch_size = 512)
 with open(sys.argv[2], 'w') as f:
     f.write('id,label\n')
     for i in range(200000):
