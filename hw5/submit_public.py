@@ -18,7 +18,6 @@ test_path = sys.argv[1]
 with open(test_path,encoding = 'utf-8') as f:
     test = f.readlines()
 test_X = [preprocess(line.strip().split(",",1)[1]) for line in test]
-test_X = test_X[1:]
 
 
 tokenizer = Tokenizer(num_words=None,filters="\n\t")
