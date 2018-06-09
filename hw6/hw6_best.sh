@@ -1,2 +1,2 @@
-wget -O ./complex.h5 'https://www.dropbox.com/s/sedsruagmxzfhnq/submit.h5?dl=1'
+wget -O ./simple.h5 'https://www.dropbox.com/s/sedsruagmxzfhnq/submit.h5?dl=1'
 python simple.py $1 $2 $3 $4
